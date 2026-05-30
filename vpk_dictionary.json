@@ -1,0 +1,698 @@
+{
+  "vpk_path_dictionary": {
+    "Bill": [
+      "sound/player/survivor/voice/namvet/",
+      "materials/models/survivors/namvet/",
+      "materials/vgui/s_panel_namvet",
+      "materials/vgui/s_panel_namvet_incap",
+      "materials/vgui/select_bill",
+      "models/survivors/survivor_namvet",
+      "models/survivors/namvet/namvet_deathpose",
+      "models/weapons/arms/v_arms_bill",
+      "materials/models/v_models/survivors/v_namvet_hands"
+    ],
+    "Zoey": [
+      "sound/player/survivor/voice/teengirl/",
+      "materials/models/survivors/teenangst/",
+      "materials/vgui/s_panel_teenangst",
+      "materials/vgui/s_panel_teenangst_incap",
+      "materials/vgui/select_zoey",
+      "models/survivors/survivor_teenangst",
+      "models/survivors/survivor_teenangst_light",
+      "models/survivors/anim_teenangst_light",
+      "models/weapons/arms/v_arms_zoey",
+      "materials/models/v_models/survivors/v_teenangst_hands",
+      "materials/models/weapons/v_models/arms/v_model_zoey_arms"
+    ],
+    "Francis": [
+      "sound/player/survivor/voice/biker/",
+      "materials/models/survivors/biker/",
+      "materials/models/survivors/biker_manager_eyeball_r",
+      "materials/models/survivors/biker_manager_eyeball_l",
+      "materials/vgui/s_panel_biker",
+      "materials/vgui/s_panel_biker_incap",
+      "materials/vgui/select_francis",
+      "models/survivors/survivor_biker",
+      "models/survivors/survivor_biker_light",
+      "models/anim_biker_own_anims",
+      "models/weapons/arms/v_arms_francis",
+      "materials/models/v_models/survivors/v_biker_hands",
+      "materials/models/weapons/v_models/arms/v_model_francis_arms"
+    ],
+    "Louis": [
+      "sound/player/survivor/voice/manager/",
+      "materials/models/survivors/manager/",
+      "materials/vgui/s_panel_manager",
+      "materials/vgui/s_panel_manager_incap",
+      "materials/vgui/select_louis",
+      "models/survivors/survivor_manager",
+      "models/weapons/arms/v_arms_louis",
+      "materials/models/v_models/survivors/v_manager_hands",
+      "materials/models/weapons/v_models/arms/v_model_louis_arms"
+    ],
+    "Coach": [
+      "sound/player/survivor/voice/coach/",
+      "materials/models/survivors/coach/",
+      "materials/vgui/s_panel_coach",
+      "materials/vgui/s_panel_coach_incap",
+      "materials/vgui/s_panel_lobby_coach",
+      "models/survivors/survivor_coach",
+      "models/survivors/anim_coach",
+      "models/weapons/arms/v_arms_coach_new",
+      "materials/models/weapons/v_models/arms/v_model_coach_arms"
+    ],
+    "Ellis": [
+      "sound/player/survivor/voice/mechanic/",
+      "materials/models/survivors/mechanic/",
+      "materials/vgui/s_panel_mechanic",
+      "materials/vgui/s_panel_mechanic_incap",
+      "materials/vgui/s_panel_lobby_mechanic",
+      "models/survivors/survivor_mechanic",
+      "models/survivors/anim_mechanic",
+      "models/weapons/arms/v_arms_mechanic_new",
+      "materials/models/weapons/v_models/arms/v_model_ellis_arms"
+    ],
+    "Nick": [
+      "sound/player/survivor/voice/gambler/",
+      "materials/models/survivors/gambler/",
+      "materials/vgui/s_panel_gambler",
+      "materials/vgui/s_panel_gambler_incap",
+      "materials/vgui/s_panel_lobby_gambler",
+      "models/survivors/survivor_gambler",
+      "models/survivors/anim_gambler",
+      "models/weapons/arms/v_arms_gambler_new",
+      "materials/models/weapons/v_models/arms/v_model_nick_arms"
+    ],
+    "Rochelle": [
+      "sound/player/survivor/voice/producer/",
+      "materials/models/survivors/producer/",
+      "materials/vgui/s_panel_producer",
+      "materials/vgui/s_panel_producer_incap",
+      "materials/vgui/s_panel_lobby_producer",
+      "models/survivors/survivor_producer",
+      "models/survivors/anim_producer",
+      "models/weapons/arms/v_arms_producer_new",
+      "materials/models/weapons/v_models/arms/v_model_rochelle_arms"
+    ],
+    "Tank": [
+      "sound/player/tank/",
+      "sound/music/tank/",
+      "models/infected/hulk_dlc3",
+      "models/infected/hulk_l4d1",
+      "materials/vgui/zombieteamimage_tank"
+    ],
+    "Boomer": [
+      "models/infected/boomer_l4d1",
+      "models/infected/boomer",
+      "models/infected/boomette",
+      "particles/boomer_fx.pcf",
+      "sound/player/boomer/",
+      "materials/vgui/zombieteamimage_boomer"
+    ],
+    "Smoker": [
+      "models/infected/smoker",
+      "particles/smoker_fx.pcf",
+      "sound/player/smoker/",
+      "materials/vgui/zombieteamimage_smoker"
+    ],
+    "Hunter": [
+      "sound/player/hunter/",
+      "models/infected/hunter",
+      "models/infected/hunter_l4d1",
+      "materials/vgui/zombieteamimage_hunter"
+    ],
+    "Spitter": [
+      "sound/player/spitter/",
+      "models/infected/spitter",
+      "materials/vgui/zombieteamimage_spitter"
+    ],
+    "Charger": [
+      "sound/player/charger/",
+      "models/infected/charger",
+      "materials/vgui/zombieteamimage_charger"
+    ],
+    "Witch": [
+      "models/infected/witch",
+      "ems/manacat_witch/ai_settings.txt"
+    ],
+    "Common Infected": [
+      "models/infected/hulk",
+      "sound/npc/infected/",
+      "models/infected/common_patient_male01_l4d2",
+      "models/infected/common_male_baggagehandler_01",
+      "models/infected/common_female_rural01",
+      "models/infected/common_female_nurse01",
+      "models/infected/common_female01"
+    ],
+    "AK-47": [
+      "sound/weapons/rifle_ak47/",
+      "models/v_models/v_rifle_ak47",
+      "models/v_models/a_rifle_ak47",
+      "models/w_models/weapons/w_rifle_ak47",
+      "materials/models/weapons/cs2/rif_ak47/",
+      "materials/vgui/hud/icon_rifle_ak47",
+      "scripts/weapon_rifle_ak47.txt",
+      "materials/models/v_models/weapons/rifle/ak47",
+      "sound/weapons/spent_mags/assault_rifles/ak_mag"
+    ],
+    "Assault Rifle (M16)": [
+      "sound/weapons/rifle/",
+      "models/v_models/v_rifle",
+      "models/v_models/a_rifle",
+      "models/w_models/weapons/w_rifle_m16a2",
+      "materials/models/v_models/weapons/rifle/rifle_a",
+      "materials/models/v_models/weapons/rifle/rifle_b",
+      "materials/models/v_models/weapons/rifle/m16a2",
+      "materials/vgui/hud/icon_rifle",
+      "scripts/weapon_rifle.txt",
+      "materials/models/codmw2022/weapons/m4/",
+      "sound/weapons/spent_mags/assault_rifles/m16_mag",
+      "materials/models/w_models/taclight/"
+    ],
+    "Desert Rifle (SCAR)": [
+      "sound/weapons/rifle_desert/",
+      "models/v_models/v_desert_rifle",
+      "models/v_models/a_desert_rifle",
+      "models/w_models/weapons/w_desert_rifle",
+      "materials/vgui/hud/icon_rifle_desert",
+      "scripts/weapon_rifle_desert.txt",
+      "sound/weapons/spent_mags/assault_rifles/scar_mag"
+    ],
+    "SG552": [
+      "sound/weapons/sg552/",
+      "models/v_models/v_rif_sg552",
+      "models/v_models/a_rif_sg552",
+      "models/w_models/weapons/w_rifle_sg552",
+      "materials/vgui/hud/icon_rifle_sg552",
+      "scripts/weapon_rifle_sg552.txt",
+      "materials/models/weapons/v_models/rif_sg552/",
+      "materials/models/weapons/w_models/w_rif_sg552/",
+      "sound/weapons/spent_mags/assault_rifles/sg552_mag"
+    ],
+    "SMG (Uzi)": [
+      "sound/weapons/smg/",
+      "models/v_models/v_smg",
+      "models/v_models/a_smg",
+      "models/w_models/weapons/w_smg_uzi",
+      "materials/vgui/hud/icon_smg",
+      "scripts/weapon_smg.txt",
+      "materials/models/v_models/weapons/smg/uzi",
+      "sound/weapons/spent_mags/sub_machineguns/uzi_mag"
+    ],
+    "Silenced SMG": [
+      "sound/weapons/smg_silenced/",
+      "models/v_models/v_silenced_smg",
+      "models/v_models/a_silenced_smg",
+      "models/w_models/weapons/w_smg_a",
+      "materials/vgui/hud/icon_smg_silenced",
+      "scripts/weapon_smg_silenced.txt",
+      "materials/models/v_models/weapons/smg/smg_a",
+      "sound/weapons/spent_mags/sub_machineguns/mac_mag"
+    ],
+    "MP5": [
+      "sound/weapons/mp5navy/",
+      "models/v_models/v_smg_mp5",
+      "models/v_models/a_smg_mp5",
+      "models/w_models/weapons/w_smg_mp5",
+      "materials/vgui/hud/icon_smg_mp5",
+      "scripts/weapon_smg_mp5.txt",
+      "materials/models/weapons/v_models/smg_mp5/",
+      "materials/models/weapons/w_models/w_smg_mp5/",
+      "sound/weapons/spent_mags/sub_machineguns/mp5_mag",
+      "materials/ping_system/icon_smg_mp5"
+    ],
+    "Pump Shotgun": [
+      "sound/weapons/shotgun/",
+      "models/v_models/v_pumpshotgun",
+      "models/v_models/a_pumpshotgun",
+      "models/w_models/weapons/w_shotgun",
+      "materials/vgui/hud/icon_pumpshotgun",
+      "scripts/weapon_pumpshotgun.txt",
+      "materials/models/v_models/weapons/shotgun/v_shotgun_wood",
+      "materials/models/v_models/weapons/shotgun/v_pump_shotgun_reference"
+    ],
+    "Chrome Shotgun": [
+      "sound/weapons/shotgun_chrome/",
+      "models/v_models/v_shotgun_chrome",
+      "models/v_models/a_shotgun_chrome",
+      "models/w_models/weapons/w_pumpshotgun_a",
+      "materials/vgui/hud/icon_shotgun_chrome",
+      "scripts/weapon_shotgun_chrome.txt",
+      "materials/models/v_models/weapons/shotgun/v_shotgun_a"
+    ],
+    "Auto Shotgun": [
+      "sound/weapons/auto_shotgun/",
+      "models/v_models/v_autoshotgun",
+      "models/v_models/a_autoshotgun",
+      "models/w_models/weapons/w_autoshot_m4super",
+      "materials/vgui/hud/icon_autoshotgun",
+      "scripts/weapon_autoshotgun.txt",
+      "materials/models/v_models/weapons/autoshot/m4super"
+    ],
+    "Combat Shotgun (SPAS-12)": [
+      "sound/weapons/auto_shotgun_spas/",
+      "models/v_models/v_shotgun_spas",
+      "models/v_models/a_shotgun_spas",
+      "models/w_models/weapons/w_shotgun_spas",
+      "materials/vgui/hud/icon_shotgun_spas",
+      "scripts/weapon_shotgun_spas.txt",
+      "materials/models/v_models/weapons/autoshot/shotgun_spas"
+    ],
+    "Hunting Rifle": [
+      "sound/weapons/hunting_rifle/",
+      "models/v_models/v_huntingrifle",
+      "models/v_models/a_huntingrifle",
+      "models/w_models/weapons/w_sniper_mini14",
+      "materials/vgui/hud/icon_hunting_rifle",
+      "scripts/weapon_hunting_rifle.txt",
+      "materials/models/v_models/weapons/sniper/v_sniper_reference",
+      "sound/weapons/spent_mags/sniper_rifles/mini14_mag"
+    ],
+    "Military Sniper": [
+      "sound/weapons/sniper_military/",
+      "models/v_models/v_sniper_military",
+      "models/v_models/a_sniper_military",
+      "models/w_models/weapons/w_sniper_military",
+      "materials/vgui/hud/icon_sniper_military",
+      "scripts/weapon_sniper_military.txt",
+      "materials/models/v_models/weapons/sniper/v_sniper_a",
+      "sound/weapons/spent_mags/sniper_rifles/g3sg_mag"
+    ],
+    "AWP": [
+      "sound/weapons/awp/",
+      "models/v_models/v_snip_awp",
+      "models/v_models/a_snip_awp",
+      "models/w_models/weapons/w_sniper_awp",
+      "materials/vgui/hud/icon_sniper_awp",
+      "scripts/weapon_sniper_awp.txt",
+      "materials/models/weapons/v_models/snip_awp/",
+      "materials/models/weapons/w_models/w_snip_awp/",
+      "sound/weapons/spent_mags/sniper_rifles/awp_mag"
+    ],
+    "Scout": [
+      "sound/weapons/scout/",
+      "models/v_models/v_snip_scout",
+      "models/v_models/a_snip_scout",
+      "models/w_models/weapons/w_sniper_scout",
+      "materials/vgui/hud/icon_sniper_scout",
+      "scripts/weapon_sniper_scout.txt",
+      "materials/models/weapons/v_models/snip_scout/",
+      "materials/models/weapons/w_models/w_snip_scout/",
+      "sound/weapons/spent_mags/sniper_rifles/scout_mag"
+    ],
+    "M60": [
+      "sound/weapons/machinegun_m60/",
+      "models/v_models/v_m60",
+      "models/v_models/a_m60",
+      "models/w_models/weapons/w_m60",
+      "materials/vgui/hud/icon_rifle_m60",
+      "scripts/weapon_rifle_m60.txt",
+      "materials/models/v_models/weapons/m60/",
+      "sound/weapons/spent_mags/light_machinegun/m60_box"
+    ],
+    "Grenade Launcher": [
+      "sound/weapons/grenade_launcher/",
+      "models/v_models/v_grenade_launcher",
+      "models/v_models/a_grenade_launcher",
+      "models/w_models/weapons/w_grenade_launcher",
+      "materials/vgui/hud/icon_grenade_launcher",
+      "scripts/weapon_grenade_launcher.txt",
+      "materials/models/v_models/weapons/grenade_launcher/",
+      "sound/weapons/spent_mags/grenade_launcher/m79_shell"
+    ],
+    "Pistols": [
+      "sound/weapons/pistol/",
+      "sound/weapons/pistol_silver/",
+      "sound/weapons/dual_pistol/",
+      "models/v_models/v_pistola",
+      "models/v_models/v_dual_pistola",
+      "models/v_models/k_pistola",
+      "models/v_models/k_dual_pistola",
+      "models/v_models/a_pistola",
+      "models/v_models/a_dual_pistola",
+      "models/w_models/weapons/w_pistol_a",
+      "models/w_models/weapons/w_pistol_a_dual",
+      "models/w_models/weapons/w_pistol_b",
+      "materials/vgui/hud/icon_pistol",
+      "materials/ping_system/icon_pistol",
+      "materials/ping_system/ping_pistol",
+      "scripts/weapon_pistol.txt",
+      "materials/models/v_models/weapons/pistol/",
+      "materials/weapons/4pistols/",
+      "sound/weapons/spent_mags/handguns/generic_mag",
+      "sound/weapons/clipempty_pistol.wav"
+    ],
+    "Magnum": [
+      "sound/weapons/magnum/",
+      "models/v_models/v_desert_eagle",
+      "models/v_models/a_desert_eagle",
+      "models/w_models/weapons/w_desert_eagle",
+      "materials/vgui/hud/icon_pistol_magnum",
+      "scripts/weapon_pistol_magnum.txt",
+      "materials/models/v_models/weapons/deserteagle/",
+      "materials/models/weapons/cs2/pist_deagle/",
+      "sound/weapons/spent_mags/handguns/deagle_mag"
+    ],
+    "Fireaxe": [
+      "sound/weapons/axe/",
+      "models/weapons/melee/v_fireaxe",
+      "models/weapons/melee/w_fireaxe",
+      "materials/vgui/hud/icon_fireaxe",
+      "scripts/melee/fireaxe.txt",
+      "materials/models/weapons/melee/fireaxe/"
+    ],
+    "Katana": [
+      "sound/weapons/katana/",
+      "models/weapons/melee/v_katana",
+      "models/weapons/melee/w_katana",
+      "materials/vgui/hud/icon_katana",
+      "scripts/melee/katana.txt",
+      "materials/models/weapons/melee/katana"
+    ],
+    "Machete": [
+      "sound/weapons/machete/",
+      "models/weapons/melee/v_machete",
+      "models/weapons/melee/w_machete",
+      "materials/vgui/hud/icon_machete",
+      "scripts/melee/machete.txt",
+      "materials/models/weapons/melee/machete"
+    ],
+    "Knife": [
+      "sound/weapons/knife/",
+      "models/v_models/v_knife_t",
+      "models/v_models/a_knife_t",
+      "models/w_models/weapons/w_knife_t",
+      "materials/vgui/hud/icon_knife",
+      "scripts/melee/knife.txt",
+      "scripts/melee/hunting_knife.txt",
+      "materials/models/weapons/v_models/knife_t/",
+      "materials/models/weapons/w_models/w_knife_t/"
+    ],
+    "Frying Pan": [
+      "sound/weapons/pan/",
+      "models/weapons/melee/v_frying_pan",
+      "models/weapons/melee/w_frying_pan",
+      "materials/vgui/hud/icon_frying_pan",
+      "scripts/melee/frying_pan.txt"
+    ],
+    "Crowbar": [
+      "sound/weapons/crowbar/",
+      "models/weapons/melee/v_crowbar",
+      "models/weapons/melee/w_crowbar",
+      "materials/vgui/hud/icon_crowbar",
+      "scripts/melee/crowbar.txt",
+      "materials/models/weapons/melee/crowbar"
+    ],
+    "Baseball Bat": [
+      "sound/weapons/bat/bat_",
+      "models/weapons/melee/v_bat",
+      "models/weapons/melee/w_bat",
+      "materials/vgui/hud/icon_baseball_bat",
+      "scripts/melee/baseball_bat.txt",
+      "materials/models/weapons/melee/bat"
+    ],
+    "Cricket Bat": [
+      "sound/weapons/cricketbat/",
+      "sound/weapons/bat/melee_cricket_bat_",
+      "models/weapons/melee/v_cricket_bat",
+      "models/weapons/melee/w_cricket_bat",
+      "materials/vgui/hud/icon_cricket_bat",
+      "scripts/melee/cricket_bat.txt",
+      "materials/models/weapons/melee/cricket_bat"
+    ],
+    "Golf Club": [
+      "sound/weapons/golf_club/",
+      "models/weapons/melee/v_golfclub",
+      "models/weapons/melee/w_golfclub",
+      "materials/vgui/hud/icon_golfclub",
+      "scripts/melee/golfclub.txt",
+      "materials/models/weapons/melee/golf_club"
+    ],
+    "Tonfa": [
+      "sound/weapons/tonfa/",
+      "models/weapons/melee/v_tonfa",
+      "models/weapons/melee/w_tonfa",
+      "materials/vgui/hud/icon_tonfa",
+      "scripts/melee/tonfa.txt",
+      "materials/models/weapons/melee/tonfa",
+      "materials/models/weapons/melee/riotshield_"
+    ],
+    "Shovel": [
+      "sound/weapons/shovel/",
+      "models/weapons/melee/v_shovel",
+      "models/weapons/melee/a_shovel",
+      "models/weapons/melee/w_shovel",
+      "materials/vgui/hud/icon_shovel",
+      "scripts/melee/shovel.txt",
+      "materials/models/weapons/melee/shovel/"
+    ],
+    "Pitchfork": [
+      "sound/weapons/pitchfork/",
+      "models/weapons/melee/v_pitchfork",
+      "models/weapons/melee/a_pitchfork",
+      "models/weapons/melee/w_pitchfork",
+      "materials/vgui/hud/icon_pitchfork",
+      "scripts/melee/pitchfork.txt",
+      "materials/models/weapons/melee/pitchfork/"
+    ],
+    "Guitar": [
+      "sound/weapons/guitar/",
+      "models/weapons/melee/v_electric_guitar",
+      "models/weapons/melee/w_electric_guitar",
+      "materials/vgui/hud/icon_electric_guitar",
+      "scripts/melee/electric_guitar.txt",
+      "materials/models/weapons/melee/electric_guitar"
+    ],
+    "Chainsaw": [
+      "sound/weapons/chainsaw/",
+      "models/weapons/melee/v_chainsaw",
+      "models/weapons/melee/w_chainsaw",
+      "materials/vgui/hud/icon_chainsaw",
+      "scripts/weapon_chainsaw.txt",
+      "materials/models/weapons/v_chainsaw/"
+    ],
+    "Medkit": [
+      "sound/player/survivor/heal/",
+      "models/v_models/v_medkit",
+      "models/v_models/a_medkit",
+      "models/v_models/v_medkit_ref",
+      "models/w_models/weapons/w_eq_medkit",
+      "materials/vgui/hud/icon_first_aid_kit",
+      "scripts/weapon_first_aid_kit.txt",
+      "materials/models/v_models/weapons/eq_medkit/",
+      "materials/models/w_models/eq_medkit/",
+      "materials/models/h_tablet/",
+      "materials/division_medkit/"
+    ],
+    "Pain Pills": [
+      "sound/player/items/pain_pills/",
+      "models/v_models/v_painpills",
+      "models/v_models/a_painpills",
+      "models/w_models/weapons/w_eq_painpills",
+      "materials/vgui/hud/icon_painpills",
+      "scripts/weapon_pain_pills.txt",
+      "materials/models/v_models/weapons/eq_painpills/",
+      "materials/models/w_models/eq_painpills/"
+    ],
+    "Adrenaline": [
+      "sound/weapons/adrenaline/",
+      "models/v_models/v_adrenaline",
+      "models/v_models/a_adrenaline",
+      "models/w_models/weapons/w_eq_adrenaline",
+      "materials/vgui/hud/icon_adrenaline",
+      "scripts/weapon_adrenaline.txt",
+      "materials/models/v_models/weapons/eq_adrenaline/"
+    ],
+    "Defibrillator": [
+      "sound/weapons/defibrillator/",
+      "models/v_models/v_defibrillator",
+      "models/w_models/weapons/w_eq_defibrillator",
+      "models/w_models/weapons/w_eq_defibrillator_paddles",
+      "models/w_models/weapons/w_eq_defibrillator_no_paddles",
+      "materials/vgui/hud/icon_defibrillator",
+      "scripts/weapon_defibrillator.txt",
+      "materials/models/v_models/weapons/eq_defibrillator/"
+    ],
+    "Pipe Bomb": [
+      "sound/weapons/hegrenade/",
+      "models/v_models/v_pipebomb",
+      "models/v_models/a_pipebomb",
+      "models/w_models/weapons/w_eq_pipebomb",
+      "models/w_models/weapons/w_he_grenade",
+      "materials/vgui/hud/icon_pipebomb",
+      "scripts/weapon_pipe_bomb.txt",
+      "materials/models/v_models/weapons/eq_pipebomb/",
+      "materials/models/w_models/eq_pipebomb/"
+    ],
+    "Molotov": [
+      "sound/weapons/molotov/",
+      "models/v_models/v_molotov",
+      "models/v_models/anim_v_molotov",
+      "models/v_models/anim_a_molotov",
+      "models/w_models/weapons/w_eq_molotov",
+      "materials/vgui/hud/icon_molotov",
+      "materials/ping_system/icon_molotov",
+      "scripts/weapon_molotov.txt",
+      "materials/models/v_models/weapons/eq_molotov/",
+      "materials/models/w_models/eq_molotov/",
+      "materials/weapons/insmolo/"
+    ],
+    "Boomer Bile": [
+      "sound/weapons/ceda_jar/",
+      "models/v_models/v_bile_flask",
+      "models/w_models/weapons/w_eq_bile_flask",
+      "materials/vgui/hud/icon_vomitjar",
+      "scripts/weapon_vomitjar.txt",
+      "materials/models/v_models/weapons/eq_bile_flask/"
+    ],
+    "Ammo Pile": [
+      "models/props/terror/ammo_stack",
+      "models/props/terror/incendiary_ammo",
+      "models/props/terror/exploding_ammo",
+      "models/v_models/v_explosive_ammopack",
+      "models/v_models/v_incendiary_ammopack",
+      "models/w_models/weapons/w_eq_explosive_ammopack",
+      "models/w_models/weapons/w_eq_incendiary_ammopack",
+      "models/props_unique/spawn_apartment/coffeeammo",
+      "materials/models/props/terror/",
+      "materials/vgui/hud/icon_upgradepack_",
+      "materials/vgui/hud/icon_ammo",
+      "scripts/weapon_upgradepack_",
+      "scripts/weapon_ammo_pack.txt",
+      "sound/player/ammo_pack_use.wav"
+    ],
+    "Gas Can": [
+      "models/props_junk/gascan001a",
+      "materials/models/props_junk/phys_objects02a",
+      "scripts/weapon_gascan.txt",
+      "materials/vgui/hud/icon_gas_can"
+    ],
+    "Propane Tank": [
+      "models/props_junk/propanecanister001a",
+      "materials/models/props_junk/propanecanister01a",
+      "scripts/weapon_propanetank.txt"
+    ],
+    "Oxygen Tank": [
+      "models/props_equipment/oxygentank01",
+      "scripts/weapon_oxygentank.txt"
+    ],
+    "Gnome": [
+      "models/weapons/melee/v_gnome",
+      "models/props_junk/gnome",
+      "scripts/weapon_gnome.txt",
+      "materials/models/props_fairgrounds/gallery_gnome_sign"
+    ],
+    "Menus & Loading": [
+      "materials/vgui/menu_mode_campaign"
+    ],
+    "Icons & HUD": [
+      "materials/vgui/hud/healthbar_",
+      "materials/vgui/hud/scalablepanel_",
+      "materials/sprites/640_pain_up",
+      "materials/vgui/hud/splatter_",
+      "materials/vgui/hud/overlay_dead",
+      "materials/vgui/hud/progressbar_",
+      "materials/vgui/hud/iconsheet",
+      "materials/vgui/hud/crouch_survivor",
+      "materials/vgui/gfx/vgui/defaultweapon",
+      "materials/vgui/select_random",
+      "materials/sprites/crosshairs",
+      "materials/vgui/hud/icon_reviving",
+      "materials/vgui/hud/icon_cola_bottles",
+      "materials/vgui/hud/icon_button",
+      "materials/vgui/tipgraphic",
+      "materials/vgui/s_panel_hand",
+      "materials/vgui/hud/survivaltimerbackground",
+      "materials/engine/"
+    ],
+    "Misc UI": [
+      "resource/l4d360ui_tu_english.txt",
+      "resource/closecaption_english.txt",
+      "sound/common/wpn_hudoff.wav",
+      "sound/ui/littlereward.wav",
+      "sound/ui/bigreward.wav",
+      "scripts/sprays_manifest.txt",
+      "materials/vgui/logos/",
+      "scripts/mod_textures.txt",
+      "sound/items/itempickup.wav",
+      "scripts/radialmenu.txt"
+    ],
+    "Combat Music": [
+      "sound/music/undeath/",
+      "sound/music/tags/",
+      "sound/music/unalive/",
+      "sound/player/orch_hit_csharp_short.wav",
+      "sound/music/the_end/",
+      "sound/music/flu/"
+    ],
+    "Game States": [
+      "scripts/gamemodes.txt",
+      "scripts/population.txt",
+      "ems/",
+      "missions/",
+      "scripts/stats_crawl.txt",
+      "sound/weapons/clipempty_rifle.wav",
+      "scripts/damagecutout.txt",
+      "models/survivors/anim_gestures"
+    ],
+    "Gore": [
+      "sound/npc/infected/gore/",
+      "sound/player/survivor/splat/",
+      "materials/decals/",
+      "sound/player/survivor/hit/",
+      "sound/player/damage",
+      "sound/player/heartbeatloop.wav"
+    ],
+    "Infected Cues": [
+      "sound/npc/infected/action/",
+      "sound/npc/infected/alert/",
+      "sound/npc/headcrab/"
+    ],
+    "Environment FX": [
+      "particles/",
+      "sound/animation/",
+      "sound/player/footsteps/",
+      "sound/player/jumplanding",
+      "sound/physics/",
+      "sound/items/flashlight",
+      "materials/effects/",
+      "materials/models/w_models/taclight/",
+      "materials/models/w_models/eq_laser_sights/",
+      "models/w_models/weapons/w_laser_sights",
+      "sound/player/laser_on.wav",
+      "sound/weapons/fx/",
+      "sound/weapons/debris",
+      "sound/player/sprayer.wav",
+      "materials/models/weapons/v_models/arms/",
+      "sound/player/survivor/swing/",
+      "sound/ambient/explosions/",
+      "sound/weapons/spent_mags/generic_water",
+      "sound/common/right.wav",
+      "sound/common/rearright.wav",
+      "materials/shared/base.vtf",
+      "materials/shared/normal.vtf",
+      "materials/shared/phong_exp.vtf",
+      "sound/vehicles/helicopter/",
+      "sound/ambient/weather/",
+      "sound/ambient/alarms/",
+      "sound/ambient/ambience/",
+      "materials/dev/"
+    ],
+    "World Props": [
+      "materials/signs/",
+      "models/props_urban/",
+      "models/props_junk/dieselcan",
+      "models/props_junk/explosive_box001",
+      "materials/models/props_junk/phys_objects02b",
+      "materials/models/props_junk/explosive_box001",
+      "materials/models/props_interiors/medicalcabinet02.vtf",
+      "materials/models/props_junk/phys_objects",
+      "materials/models/props_industrial/",
+      "materials/models/props_street/",
+      "sound/weapons/50cal/",
+      "models/w_models/weapons/50cal",
+      "models/w_models/weapons/w_minigun",
+      "materials/models/w_models/minigun/"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+    "STEAM_API_KEY": "",
+    "COLLECTION_ID": "",
+    "SESSION_ID": "",
+    "STEAM_LOGIN_SECURE": "",
+    "QOL_MODS": [
+
+    ],
+    "SCRAPER_FILTERS": {
+        "MAX_SIZE_MB": 500,
+        "MIN_SUBS": 10
+    }
+}

@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+settings.json
+vpk_mod_pool.db
+logs/
+dist/
+build/
+*.spec

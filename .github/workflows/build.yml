@@ -1,0 +1,41 @@
+name: Build L4D2 Director Engine
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install PySide6 aiohttp requests SQLAlchemy
+        pip install pyinstaller
+        
+    - name: Compile Executable
+      run: pyinstaller --name "L4D2_Director_Engine" --windowed --noconfirm main.py
+      
+    - name: Package Release Files
+      run: |
+        mkdir release_build
+        cp dist/L4D2_Director_Engine/L4D2_Director_Engine.exe release_build/
+        cp vpk_dictionary.json release_build/
+        cp settings.json release_build/
+        
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: L4D2-Director-Windows-Build
+        path: release_build/
