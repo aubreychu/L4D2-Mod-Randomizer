@@ -35,7 +35,7 @@ jobs:
         cp settings.json release_build/
         
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: L4D2-Director-Windows-Build
         path: release_build/
