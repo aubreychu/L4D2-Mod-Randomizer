@@ -5,7 +5,10 @@ An automated, intelligent mod manager and loadout generator for Left 4 Dead 2.
 The Director Engine acts as an automated curator for your Steam Workshop. It uses a custom VPK X-Ray parser to scan the internal file structures of mods, categorize them by exact slot (e.g., AK-47 Model vs. AK-47 Sound), and generate mathematically conflict-free loadouts. Once generated, it uses asynchronous networking to deploy the loadout directly to a target Steam Collection in seconds.
 
 **Security Note:** Your Steam API key and session cookies are stored *strictly locally* on your machine in `settings.json`. This application communicates directly with the Steam API and never routes your credentials or data through any third-party servers.
+**Note on Windows SmartScreen:**
+Because this is a free, independently developed tool, the .exe is not signed with an expensive corporate security certificate. When you run it for the first time, Windows may show a blue "Windows protected your PC" popup.
 
+To run the Director Engine, click More info, and then click Run anyway.
 ## Table of Contents
 - [Installation](#installation)
 - [Initial Setup & Steam Credentials](#initial-setup--steam-credentials)
