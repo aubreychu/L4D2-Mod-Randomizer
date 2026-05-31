@@ -157,13 +157,13 @@
     "Assault Rifle (M16)": [
       "sound/weapons/rifle/fire",
       "sound/weapons/rifle/gunother",
-      "models/v_models/v_rifle",
-      "models/v_models/a_rifle",
+      "models/v_models/v_rifle.",
+      "models/v_models/a_rifle.",
       "models/w_models/weapons/w_rifle_m16a2",
       "materials/models/v_models/weapons/rifle/rifle_a",
       "materials/models/v_models/weapons/rifle/rifle_b",
       "materials/models/v_models/weapons/rifle/m16a2",
-      "materials/vgui/hud/icon_rifle",
+      "materials/vgui/hud/icon_rifle.",
       "scripts/weapon_rifle.txt",
       "sound/weapons/spent_mags/assault_rifles/m16_mag"
     ],
