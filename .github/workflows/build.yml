@@ -25,7 +25,7 @@ jobs:
         pip install pyinstaller
         
     - name: Compile Executable
-      run: pyinstaller --name "L4D2_Director_Engine" --windowed --noconfirm main.py
+      run: pyinstaller --name "L4D2_Director_Engine" --windowed --onefile --noconfirm main.py
       
     - name: Package Release Files
       run: |
