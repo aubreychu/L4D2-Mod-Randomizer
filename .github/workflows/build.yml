@@ -33,7 +33,7 @@ jobs:
         cp dist/L4D2_Director_Engine/L4D2_Director_Engine.exe release_build/
         cp vpk_dictionary.json release_build/
         cp settings.example.json release_build/
-        
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
