@@ -105,7 +105,6 @@
       "models/infected/boomer_l4d1",
       "models/infected/boomer",
       "models/infected/boomette",
-      "particles/boomer_fx.pcf",
       "sound/player/boomer/",
       "materials/vgui/zombieteamimage_boomer"
     ],
@@ -136,7 +135,7 @@
       "ems/manacat_witch/ai_settings.txt"
     ],
     "Common Infected": [
-      "models/infected/hulk",
+      "models/infected/common_",
       "sound/npc/infected/",
       "models/infected/common_patient_male01_l4d2",
       "models/infected/common_male_baggagehandler_01",
@@ -156,7 +155,8 @@
       "sound/weapons/spent_mags/assault_rifles/ak_mag"
     ],
     "Assault Rifle (M16)": [
-      "sound/weapons/rifle/",
+      "sound/weapons/rifle/fire",
+      "sound/weapons/rifle/gunother",
       "models/v_models/v_rifle",
       "models/v_models/a_rifle",
       "models/w_models/weapons/w_rifle_m16a2",
@@ -165,9 +165,7 @@
       "materials/models/v_models/weapons/rifle/m16a2",
       "materials/vgui/hud/icon_rifle",
       "scripts/weapon_rifle.txt",
-      "materials/models/codmw2022/weapons/m4/",
-      "sound/weapons/spent_mags/assault_rifles/m16_mag",
-      "materials/models/w_models/taclight/"
+      "sound/weapons/spent_mags/assault_rifles/m16_mag"
     ],
     "Desert Rifle (SCAR)": [
       "sound/weapons/rifle_desert/",
