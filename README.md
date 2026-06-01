@@ -63,7 +63,7 @@ Click **Save Configuration**. Your credentials are now encrypted locally.
    Once you are happy with the loadout, click **2. Deploy to Steam**. The engine and inject the new mod list concurrently in 1–3 seconds.
 5. **Play:**
    Launch Left 4 Dead 2. Let the add-on menu load your newly subscribed items, and play.
-6  **Reroll:**
+6. **Reroll:**
    Remember to remove all previous mods in the collection before rerolling (Optional: Remove all installed addons in your game files as well to avoid bloat)
 ---
 
