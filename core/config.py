@@ -43,7 +43,7 @@ EXCLUDED_TAGS = ["Campaigns", "Mutations", "Scripts", "Gamemodes", "Addon Campai
 EXCLUDED_LOWER = [tag.lower() for tag in EXCLUDED_TAGS]
 
 # Removed "pack" and "collection" so multi-slot mods can be parsed
-EXCLUDED_TITLE_KEYWORDS = ["nsfw", "nsfl", "r18", "r-18", "18+", "18禁", "uncensored", "hentai", "nude", "lewd", "all survivors", "all infected", "all weapons", "all guns"]
+EXCLUDED_TITLE_KEYWORDS = ["nsfw", "nsfl", "r18", "r-18", "18+", "18禁", "uncensored", "hentai", "nude", "lewd"]
 
 if not os.path.exists(DICT_FILE):
     VPK_DICT = {}
