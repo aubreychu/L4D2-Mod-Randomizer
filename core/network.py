@@ -92,3 +92,53 @@ async def async_modify_collection(session, collection_id, mod_id, action="addchi
             return resp.status == 200
     except:
         return False
+
+async def resolve_dependencies_recursive(session, api_key, mod_ids, visited=None):
+    if visited is None:
+        visited = set()
+
+    if not mod_ids:
+        return set()
+
+    to_check = [mid for mid in mod_ids if mid not in visited]
+    if not to_check:
+        return set()
+
+    for mid in to_check:
+        visited.add(mid)
+
+    # We can query up to 100 items per request
+    deps = set()
+    url = "https://api.steampowered.com/IPublishedFileService/GetDetails/v1/"
+
+    for i in range(0, len(to_check), 100):
+        chunk = to_check[i:i+100]
+        params = {
+            "key": api_key,
+            "include_children": "true"
+        }
+        for j, mid in enumerate(chunk):
+            params[f"publishedfileids[{j}]"] = mid
+
+        try:
+            async with session.get(url, params=params) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    details = data.get("response", {}).get("publishedfiledetails", [])
+
+                    new_children = []
+                    for item in details:
+                        children = item.get("children", [])
+                        for child in children:
+                            child_id = child.get("publishedfileid")
+                            if child_id and child_id not in visited:
+                                new_children.append(child_id)
+                                deps.add(child_id)
+
+                    if new_children:
+                        sub_deps = await resolve_dependencies_recursive(session, api_key, new_children, visited)
+                        deps.update(sub_deps)
+        except Exception as e:
+            pass
+
+    return deps
