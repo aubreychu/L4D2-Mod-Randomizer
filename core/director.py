@@ -7,7 +7,7 @@ import json
 from core.config import USER_CONFIG, VPK_DICT
 from core.database import get_all_cached_mods, get_filtered_mods, FilterType
 from core.scraper import build_mod_pool_async
-from core.network import get_collection_items, async_modify_collection
+from core.network import get_collection_items, async_modify_collection, resolve_dependencies_recursive
 from core.logger import get_logger
 
 log = get_logger(__name__)
@@ -188,15 +188,30 @@ async def _async_sync_pipeline(collection_id, selected_ids, progress_callback):
             return result
 
     async with aiohttp.ClientSession() as session:
-        mods_to_remove = [m for m in current_mods if m not in qol_mods]
-        if progress_callback: progress_callback(f"Clearing {len(mods_to_remove)} old mods...", 0.3)
+        mods_to_add = set(qol_mods) | set(selected_ids)
+
+        # Resolve dependencies
+        api_key = USER_CONFIG.get("STEAM_API_KEY", "")
+        if api_key:
+            if progress_callback: progress_callback("Resolving mod dependencies...", 0.2)
+            try:
+                deps = await resolve_dependencies_recursive(session, api_key, list(mods_to_add))
+                if deps:
+                    log.info(f"Found {len(deps)} required dependencies.")
+                    mods_to_add.update(deps)
+            except Exception as e:
+                log.error(f"Failed to resolve dependencies: {e}")
+        else:
+            log.warning("STEAM_API_KEY missing. Cannot automatically resolve dependencies.")
+
+        mods_to_remove = [m for m in current_mods if m not in mods_to_add]
+        if progress_callback: progress_callback(f"Clearing {len(mods_to_remove)} old mods...", 0.4)
         
         if mods_to_remove:
             remove_tasks = [safe_modify(session, collection_id, m, "removechild") for m in mods_to_remove]
             await asyncio.gather(*remove_tasks)
         
-        mods_to_add = set(qol_mods) | set(selected_ids)
-        if progress_callback: progress_callback(f"Injecting {len(mods_to_add)} new mods...", 0.6)
+        if progress_callback: progress_callback(f"Injecting {len(mods_to_add)} mods...", 0.7)
         
         if mods_to_add:
             add_tasks = [safe_modify(session, collection_id, m, "addchild") for m in mods_to_add]
