@@ -5,7 +5,7 @@ import base64
 import zlib
 import json
 from core.config import USER_CONFIG, VPK_DICT
-from core.database import get_all_cached_mods
+from core.database import get_all_cached_mods, get_filtered_mods, FilterType
 from core.scraper import build_mod_pool_async
 from core.network import get_collection_items, async_modify_collection
 from core.logger import get_logger
@@ -31,7 +31,7 @@ def decode_share_code(code: str) -> dict:
         log.error(f"Failed to decode share code: {e}")
         return None
 
-def prep_mixed_pool(progress_callback=None, cache_ratio=-1.0, target_theme="Any Theme"):
+def prep_mixed_pool(progress_callback=None, cache_ratio=-1.0, target_theme="Any Theme", filter_mode="none"):
     try:
         if cache_ratio == 1.0:
             new_mods = []
@@ -44,7 +44,20 @@ def prep_mixed_pool(progress_callback=None, cache_ratio=-1.0, target_theme="Any 
         log.error(f"Async Error: {e}")
         return [], {}
 
-    cached_mods = get_all_cached_mods()
+    # Map the UI string to our Database Enum safely
+    try:
+        f_mode_clean = str(filter_mode).lower().replace(" ", "_")
+        f_type = FilterType(f_mode_clean)
+    except ValueError:
+        f_type = FilterType.NONE
+
+    # Implement Top-Tier Slicing for active filters
+    if f_type != FilterType.NONE:
+        # Grabs the top 800 highest ranking mods so we randomize from the elite pool
+        cached_mods = get_filtered_mods(f_type, limit=800)
+        log.info(f"Filter [{f_type.value}] active. Isolated the top {len(cached_mods)} elite mods.")
+    else:
+        cached_mods = get_all_cached_mods()
     
     if target_theme != "Any Theme":
         cached_mods = [m for m in cached_mods if m.theme_tag == target_theme]
@@ -78,9 +91,8 @@ def prep_mixed_pool(progress_callback=None, cache_ratio=-1.0, target_theme="Any 
     return mixed_pool, stats
 
 def allocate_loadout(mixed_pool):
-    # Initialize all slots to None
     assignments = {f"{s} [{t}]": None for s in VPK_DICT.keys() for t in ["Model", "Sound"]}
-    selected_mods = set(USER_CONFIG["QOL_MODS"])
+    selected_mods = set(USER_CONFIG.get("QOL_MODS", []))
     
     for slot_name in VPK_DICT.keys():
         for slot_type in ["Model", "Sound"]:
@@ -90,13 +102,11 @@ def allocate_loadout(mixed_pool):
                 for mod in mixed_pool:
                     if mod.id in selected_mods: continue
                     
-                    # Verify if this mod fits the current empty target slot
                     fits = False
                     if slot_type == "Model" and slot_name in mod.eval.model_slots: fits = True
                     elif slot_type == "Sound" and slot_name in mod.eval.audio_slots: fits = True
                         
                     if fits:
-                        # Conflict Detection: Ensure this multi-slot mod doesn't overwrite a slot we already locked in
                         conflict = False
                         for ms in mod.eval.model_slots:
                             if assignments.get(f"{ms} [Model]") is not None: conflict = True
@@ -104,7 +114,6 @@ def allocate_loadout(mixed_pool):
                             if assignments.get(f"{ast} [Sound]") is not None: conflict = True
                                 
                         if not conflict:
-                            # Safely deploy this mod across ALL slots it replaces simultaneously
                             mod_data = {"id": mod.id, "title": mod.title, "preview_url": mod.preview_url, "theme_tag": mod.theme_tag}
                             selected_mods.add(mod.id)
                             
@@ -117,7 +126,6 @@ def allocate_loadout(mixed_pool):
     return assignments, list(selected_mods)
 
 def reroll_single_slot(full_slot_name, mixed_pool, current_assignments, current_selected):
-    """Mutates current_assignments and current_selected in-place if successful."""
     base_slot, slot_type = full_slot_name.rsplit(" [", 1)
     slot_type = slot_type.strip("]") 
     random.shuffle(mixed_pool) 
@@ -133,7 +141,6 @@ def reroll_single_slot(full_slot_name, mixed_pool, current_assignments, current_
         elif slot_type == "Sound" and base_slot in mod.eval.audio_slots: fits = True
             
         if fits:
-            # Check for conflicts against the current board, IGNORING slots held by the mod we are replacing
             conflict = False
             for ms in mod.eval.model_slots:
                 existing = current_assignments.get(f"{ms} [Model]")
@@ -143,14 +150,12 @@ def reroll_single_slot(full_slot_name, mixed_pool, current_assignments, current_
                 if existing and existing["id"] != old_id: conflict = True
                     
             if not conflict:
-                # Remove the old mod completely from all its spanned slots
                 if old_id:
                     current_selected.remove(old_id)
                     for k, v in list(current_assignments.items()):
                         if v and v["id"] == old_id:
                             current_assignments[k] = None
                             
-                # Deploy new mod across all its supported slots
                 mod_data = {"id": mod.id, "title": mod.title, "preview_url": mod.preview_url, "theme_tag": mod.theme_tag}
                 current_selected.append(mod.id)
                 for ms in mod.eval.model_slots:
@@ -162,10 +167,15 @@ def reroll_single_slot(full_slot_name, mixed_pool, current_assignments, current_
     return False
 
 async def _async_sync_pipeline(collection_id, selected_ids, progress_callback):
-    qol_mods = USER_CONFIG["QOL_MODS"]
+    qol_mods = USER_CONFIG.get("QOL_MODS", [])
     
     if progress_callback: progress_callback("Reading current collection...", 0.1)
     current_mods = get_collection_items(collection_id)
+    
+    if not current_mods:
+        log.warning("Collection appears empty. (If it's not, verify your Session ID cookies).")
+    else:
+        log.info(f"Targeting {len(current_mods)} items currently in the collection for wipe processing.")
     
     semaphore = asyncio.Semaphore(5) 
     

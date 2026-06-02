@@ -53,10 +53,10 @@ async def build_mod_pool_async(progress_callback=None):
     if progress_callback: progress_callback("Hunter Scraper active...", 0.05)
     cached_ids = get_cached_ids()
     
-    # Load quality filters
     filters = USER_CONFIG.get("SCRAPER_FILTERS", {"MAX_SIZE_MB": 500, "MIN_SUBS": 10})
     max_bytes = filters["MAX_SIZE_MB"] * 1024 * 1024
     min_subs = filters["MIN_SUBS"]
+    allow_packs = USER_CONFIG.get("ALLOW_PACKS", False)
     
     async with aiohttp.ClientSession() as session:
         results = await asyncio.gather(*[hunter_scrape(session, tag, cached_ids, progress_callback) for tag in ALLOWED_TAGS])
@@ -66,7 +66,8 @@ async def build_mod_pool_async(progress_callback=None):
             for mod_data in tag_data:
                 mod_title_lower = mod_data.get("title", "").lower()
                 mod_tags = [t.get("tag", "").lower() for t in mod_data.get("tags", [])]
-                if len(mod_tags) > 7 or any(k in mod_title_lower for k in EXCLUDED_TITLE_KEYWORDS) or any(e in mod_tags for e in EXCLUDED_LOWER): 
+                
+                if (not allow_packs and len(mod_tags) > 7) or any(k in mod_title_lower for k in EXCLUDED_TITLE_KEYWORDS) or any(e in mod_tags for e in EXCLUDED_LOWER): 
                     continue
                 
                 mod_id = mod_data["publishedfileid"]
@@ -78,7 +79,7 @@ async def build_mod_pool_async(progress_callback=None):
         mod_ids = list(raw_new_pool.keys())
         detail_results = await asyncio.gather(*[fetch_details_chunk(session, mod_ids[i:i+100]) for i in range(0, len(mod_ids), 100)])
         
-        # Apply Filters directly to chunks
+        # Apply Filters and extract Steam Engagement Metrics directly from the chunk payload
         for chunk in detail_results:
             for d in chunk:
                 mod_id = d.get("publishedfileid")
@@ -90,8 +91,16 @@ async def build_mod_pool_async(progress_callback=None):
                         del raw_new_pool[mod_id]
                         continue
                         
+                    # Base variables
                     raw_new_pool[mod_id].file_url = d.get("file_url", "")
                     raw_new_pool[mod_id].preview_url = d.get("preview_url", "")
+                    
+                    # New Engine Metrics mapped for the sorting algorithms
+                    raw_new_pool[mod_id].subscriptions = subs
+                    raw_new_pool[mod_id].views = int(d.get("views") or 0)
+                    raw_new_pool[mod_id].favorited = int(d.get("favorited") or 0)
+                    raw_new_pool[mod_id].time_created = int(d.get("time_created") or 0)
+                    raw_new_pool[mod_id].time_updated = int(d.get("time_updated") or 0)
 
         if progress_callback: progress_callback(f"X-Ray Probing {len(raw_new_pool)} VPKs...", 0.6)
         semaphore = asyncio.Semaphore(40) 
@@ -112,6 +121,7 @@ async def passive_scrape_loop(active_targets, log_callback):
     filters = USER_CONFIG.get("SCRAPER_FILTERS", {"MAX_SIZE_MB": 500, "MIN_SUBS": 10})
     max_bytes = filters["MAX_SIZE_MB"] * 1024 * 1024
     min_subs = filters["MIN_SUBS"]
+    allow_packs = USER_CONFIG.get("ALLOW_PACKS", False)
 
     async with aiohttp.ClientSession() as session:
         while PASSIVE_SCRAPE_FLAG:
@@ -134,7 +144,8 @@ async def passive_scrape_loop(active_targets, log_callback):
                     
                     mod_title_lower = mod_data.get("title", "").lower()
                     mod_tags = [t.get("tag", "").lower() for t in mod_data.get("tags", [])]
-                    if len(mod_tags) > 7 or any(k in mod_title_lower for k in EXCLUDED_TITLE_KEYWORDS) or any(e in mod_tags for e in EXCLUDED_LOWER): 
+                    
+                    if (not allow_packs and len(mod_tags) > 7) or any(k in mod_title_lower for k in EXCLUDED_TITLE_KEYWORDS) or any(e in mod_tags for e in EXCLUDED_LOWER): 
                         continue
                     
                     raw_new_pool[mod_id] = ModItem(id=mod_id, title=mod_data.get("title", "Unknown"), tags=mod_tags)
@@ -158,8 +169,16 @@ async def passive_scrape_loop(active_targets, log_callback):
                                 del raw_new_pool[mod_id]
                                 continue
                                 
+                            # Base variables
                             raw_new_pool[mod_id].file_url = d.get("file_url", "")
                             raw_new_pool[mod_id].preview_url = d.get("preview_url", "")
+                            
+                            # New Engine Metrics mapped for the sorting algorithms
+                            raw_new_pool[mod_id].subscriptions = subs
+                            raw_new_pool[mod_id].views = int(d.get("views") or 0)
+                            raw_new_pool[mod_id].favorited = int(d.get("favorited") or 0)
+                            raw_new_pool[mod_id].time_created = int(d.get("time_created") or 0)
+                            raw_new_pool[mod_id].time_updated = int(d.get("time_updated") or 0)
 
                 if not raw_new_pool:
                     log_callback("  -> All mods rejected by quality filters.")

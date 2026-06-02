@@ -13,6 +13,7 @@ def load_user_config():
             "SESSION_ID": "",
             "STEAM_LOGIN_SECURE": "",
             "QOL_MODS": ["3161277824"],
+            "ALLOW_PACKS": False,
             "SCRAPER_FILTERS": {
                 "MAX_SIZE_MB": 500,
                 "MIN_SUBS": 10
@@ -24,8 +25,15 @@ def load_user_config():
         
     with open(CONFIG_FILE, 'r') as f:
         cfg = json.load(f)
+        needs_save = False
         if "SCRAPER_FILTERS" not in cfg:
             cfg["SCRAPER_FILTERS"] = {"MAX_SIZE_MB": 500, "MIN_SUBS": 10}
+            needs_save = True
+        if "ALLOW_PACKS" not in cfg:
+            cfg["ALLOW_PACKS"] = False
+            needs_save = True
+            
+        if needs_save:
             save_user_config(cfg)
         return cfg
 
