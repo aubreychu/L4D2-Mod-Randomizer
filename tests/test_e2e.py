@@ -61,6 +61,7 @@ def test_full_user_journey(app, qtbot, mocker):
     assert app is not None
 
     # 2. Simulate Passive Scraper Tab
+    app.setup_scraper_tab()
     app.tabs.setCurrentIndex(2)
     assert app.tabs.currentIndex() == 2
 
