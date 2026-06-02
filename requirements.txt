@@ -2,3 +2,6 @@ aiohttp>=3.13.5
 requests>=2.34.2
 PySide6>=6.11.1
 SQLAlchemy>=2.0.50
+pytest-qt
+pytest-mock
+pytest-xvfb
