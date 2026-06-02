@@ -86,7 +86,7 @@ async def extract_vpk_paths(stream_gen) -> list:
                     meta = await buf.read(18)
                     if len(meta) < 18: break
 
-                    if ext in ['mdl', 'vmt', 'vtf', 'wav', 'mp3', 'txt', 'pcf']:
+                    if ext in {'mdl', 'vmt', 'vtf', 'wav', 'mp3', 'txt', 'pcf'}:
                         files.append(f"{path}/{name}.{ext}")
     except Exception as e:
         pass
