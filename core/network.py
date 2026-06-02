@@ -1,6 +1,7 @@
 import aiohttp
 import requests
 import json
+import re
 from core.config import USER_CONFIG, APP_ID
 
 async def fetch_page(session, target, page, search_by="tag"):
@@ -47,17 +48,41 @@ async def fetch_vpk_bytes(session, url, semaphore):
     return None
 
 def get_collection_items(collection_id):
-    url = "https://api.steampowered.com/ISteamRemoteStorage/GetCollectionDetails/v1/"
+    # NEW: Overhauled retrieval to bypass private collection blocks using cookies
+    url = f"https://steamcommunity.com/sharedfiles/filedetails/?id={collection_id}"
+    cookies = {
+        "sessionid": USER_CONFIG.get("SESSION_ID", ""), 
+        "steamLoginSecure": USER_CONFIG.get("STEAM_LOGIN_SECURE", "")
+    }
+    
     try:
-        response = requests.post(url, data={"collectioncount": 1, "publishedfileids[0]": collection_id})
+        response = requests.get(url, cookies=cookies, timeout=10)
+        if response.status_code == 200:
+            # Steam collections list items in HTML like: <div class="collectionItem" id="sharedfile_3161277824">
+            matches = re.findall(r'id="sharedfile_(\d+)"', response.text)
+            if matches:
+                return list(set(matches))
+    except Exception:
+        pass
+
+    # Fallback to WebAPI
+    api_url = "https://api.steampowered.com/ISteamRemoteStorage/GetCollectionDetails/v1/"
+    try:
+        data = {"collectioncount": 1, "publishedfileids[0]": collection_id}
+        if USER_CONFIG.get("STEAM_API_KEY"):
+            data["key"] = USER_CONFIG.get("STEAM_API_KEY")
+            
+        response = requests.post(api_url, data=data, timeout=10)
         if response.status_code == 200:
             details = response.json().get("response", {}).get("collectiondetails", [])
             if details and "children" in details[0]: 
                 return [child["publishedfileid"] for child in details[0]["children"]]
-    except: pass
+    except Exception:
+        pass
+        
     return []
 
-# NEW: High Performance Async Deploy
+# High Performance Async Deploy
 async def async_modify_collection(session, collection_id, mod_id, action="addchild"):
     url = f"https://steamcommunity.com/sharedfiles/{action}"
     cookies = {"sessionid": USER_CONFIG["SESSION_ID"], "steamLoginSecure": USER_CONFIG["STEAM_LOGIN_SECURE"]}

@@ -203,7 +203,7 @@ class L4D2RandomizerApp(QMainWindow):
         self.setup_scraper_tab()
         self.setup_sys_logs_tab()
 
-        log.info("Application Initialized. ORM Database active. Packs Supported.")
+        log.info("Application Initialized. Optimized SQLite Database & Engine Filters active.")
 
     def setup_settings_tab(self):
         layout = QGridLayout(self.tab_settings)
@@ -230,6 +230,11 @@ class L4D2RandomizerApp(QMainWindow):
         self.cfg_sec.setEchoMode(QLineEdit.Password)
         config_layout.addWidget(QLabel("Steam Login Secure:"))
         config_layout.addWidget(self.cfg_sec)
+        
+        self.chk_allow_packs = QCheckBox("Allow Multi-Item Packs (Bypass >7 Tag Limit)")
+        self.chk_allow_packs.setChecked(config.USER_CONFIG.get("ALLOW_PACKS", False))
+        config_layout.addWidget(self.chk_allow_packs)
+
         config_layout.addStretch()
 
         qol_group = QFrame()
@@ -274,6 +279,7 @@ class L4D2RandomizerApp(QMainWindow):
                 "SESSION_ID": self.cfg_ses.text().strip(),
                 "STEAM_LOGIN_SECURE": self.cfg_sec.text().strip(),
                 "QOL_MODS": new_qol,
+                "ALLOW_PACKS": self.chk_allow_packs.isChecked(),
                 "SCRAPER_FILTERS": config.USER_CONFIG.get("SCRAPER_FILTERS", {"MAX_SIZE_MB": 500, "MIN_SUBS": 10})
             }
             config.save_user_config(new_cfg)
@@ -329,6 +335,24 @@ class L4D2RandomizerApp(QMainWindow):
         self.theme_combo.addItems(["Any Theme", "Anime", "Realistic", "Meme", "Tactical", "Horror"])
         theme_layout.addWidget(self.theme_combo)
         left_layout.addWidget(theme_group)
+        
+        # New Filter Group Module
+        filter_group = QWidget()
+        filter_layout = QVBoxLayout(filter_group)
+        self.filter_lbl = QLabel("Loadout Algorithm Filter:")
+        self.filter_lbl.setStyleSheet("font-weight: bold;")
+        filter_layout.addWidget(self.filter_lbl)
+
+        self.filter_combo = QComboBox()
+        self.filter_combo.addItems([
+            "None", 
+            "Trending", 
+            "Most Subscribed", 
+            "Recently Updated", 
+            "Recently Uploaded"
+        ])
+        filter_layout.addWidget(self.filter_combo)
+        left_layout.addWidget(filter_group)
 
         ratio_group = QWidget()
         ratio_layout = QVBoxLayout(ratio_group)
@@ -842,6 +866,7 @@ class L4D2RandomizerApp(QMainWindow):
         self.btn_auto.setEnabled(False)
         self.btn_cache.setEnabled(False)
         self.theme_combo.setEnabled(False)
+        self.filter_combo.setEnabled(False)
         
         self.generate_btn.setEnabled(False)
         self.reset_btn.setEnabled(False)
@@ -852,21 +877,23 @@ class L4D2RandomizerApp(QMainWindow):
         self.btn_import.setEnabled(False)
         
         target_theme = self.theme_combo.currentText()
-        threading.Thread(target=self.run_phase_1, args=(target_theme,), daemon=True).start()
+        target_filter = self.filter_combo.currentText()
+        threading.Thread(target=self.run_phase_1, args=(target_theme, target_filter), daemon=True).start()
 
-    def run_phase_1(self, target_theme):
+    def run_phase_1(self, target_theme, target_filter):
         try:
             self.mixed_pool, stats = director.prep_mixed_pool(
                 lambda txt, val: self.signals.progress.emit(txt, val), 
                 cache_ratio=self.blend_mode,
-                target_theme=target_theme
+                target_theme=target_theme,
+                filter_mode=target_filter
             )
             
             if stats: 
                 self.signals.stats.emit(stats)
             
             if not self.mixed_pool:
-                self.signals.progress.emit(f"Error: 0 mods found for theme '{target_theme}'.", 1.0)
+                self.signals.progress.emit(f"Error: 0 mods found for theme '{target_theme}' with active filters.", 1.0)
                 self.signals.sys_log.emit(f"[WARNING] Loadout generation aborted. No mods in pool for theme: {target_theme}")
                 self.signals.generation_complete.emit()
                 return
@@ -893,6 +920,7 @@ class L4D2RandomizerApp(QMainWindow):
         self.btn_share.setEnabled(True)
         self.btn_import.setEnabled(True)
         self.theme_combo.setEnabled(True)
+        self.filter_combo.setEnabled(True)
         self.ratio_slider.setEnabled(True)
         self.btn_new.setEnabled(True)
         self.btn_auto.setEnabled(True)
@@ -920,6 +948,7 @@ class L4D2RandomizerApp(QMainWindow):
         self.btn_auto.setEnabled(True)
         self.btn_cache.setEnabled(True)
         self.theme_combo.setEnabled(True)
+        self.filter_combo.setEnabled(True)
         
         self.generate_btn.setEnabled(True)
         self.reset_btn.setEnabled(False)
@@ -938,7 +967,6 @@ class L4D2RandomizerApp(QMainWindow):
             old_id = old_mod["id"]
             if old_id in self.current_selected_ids:
                 self.current_selected_ids.remove(old_id)
-            # Remove this mod from ALL slots it currently occupies to ensure a clean slate
             for k, v in list(self.current_assignments.items()):
                 if v and v["id"] == old_id:
                     self.current_assignments[k] = None
