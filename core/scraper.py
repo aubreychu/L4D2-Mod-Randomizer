@@ -1,3 +1,4 @@
+import gc
 import asyncio
 import aiohttp
 import random
@@ -5,7 +6,7 @@ import traceback
 from core.config import ALLOWED_TAGS, EXCLUDED_LOWER, EXCLUDED_TITLE_KEYWORDS, PAGES_TO_MINE, USER_CONFIG
 from core.models import ModItem
 from core.database import get_cached_ids, save_mods_to_pool, delete_mods
-from core.network import fetch_page, fetch_details_chunk, fetch_vpk_bytes
+from core.network import fetch_page, fetch_details_chunk, fetch_vpk_stream
 from core.vpk_parser import extract_vpk_paths, map_extracted_files_to_slots
 from core.logger import get_logger
 
@@ -13,13 +14,15 @@ log = get_logger(__name__)
 PASSIVE_SCRAPE_FLAG = False
 
 async def probe_and_map_mod(session, mod: ModItem, semaphore):
+    stream_gen = fetch_vpk_stream(session, mod.file_url, semaphore)
     try:
-        binary_data = await fetch_vpk_bytes(session, mod.file_url, semaphore)
-        if binary_data:
-            internal_files = extract_vpk_paths(binary_data)
+        internal_files = await extract_vpk_paths(stream_gen)
+        if internal_files:
             map_extracted_files_to_slots(mod, internal_files)
     except Exception as e:
         pass
+    finally:
+        await stream_gen.aclose()
     return mod
 
 async def hunter_scrape(session, tag, cached_ids, progress_callback):
@@ -58,7 +61,8 @@ async def build_mod_pool_async(progress_callback=None):
     min_subs = filters["MIN_SUBS"]
     allow_packs = USER_CONFIG.get("ALLOW_PACKS", False)
     
-    async with aiohttp.ClientSession() as session:
+    timeout = aiohttp.ClientTimeout(total=60)
+    async with aiohttp.ClientSession(timeout=timeout) as session:
         results = await asyncio.gather(*[hunter_scrape(session, tag, cached_ids, progress_callback) for tag in ALLOWED_TAGS])
         
         raw_new_pool = {}
@@ -103,7 +107,7 @@ async def build_mod_pool_async(progress_callback=None):
                     raw_new_pool[mod_id].time_updated = int(d.get("time_updated") or 0)
 
         if progress_callback: progress_callback(f"X-Ray Probing {len(raw_new_pool)} VPKs...", 0.6)
-        semaphore = asyncio.Semaphore(40) 
+        semaphore = asyncio.Semaphore(10)
         await asyncio.gather(*[probe_and_map_mod(session, mod, semaphore) for mod in raw_new_pool.values()])
             
         new_safe_mods = [m for m in raw_new_pool.values() if m.eval.model_slots or m.eval.audio_slots]
@@ -111,19 +115,21 @@ async def build_mod_pool_async(progress_callback=None):
         if progress_callback: progress_callback("Saving to Local Database...", 0.9)
         save_mods_to_pool(new_safe_mods)
         
+        gc.collect()
         return new_safe_mods
 
 async def passive_scrape_loop(active_targets, log_callback):
     global PASSIVE_SCRAPE_FLAG
     cached_ids = get_cached_ids()
-    semaphore = asyncio.Semaphore(20) 
+    semaphore = asyncio.Semaphore(10)
     
     filters = USER_CONFIG.get("SCRAPER_FILTERS", {"MAX_SIZE_MB": 500, "MIN_SUBS": 10})
     max_bytes = filters["MAX_SIZE_MB"] * 1024 * 1024
     min_subs = filters["MIN_SUBS"]
     allow_packs = USER_CONFIG.get("ALLOW_PACKS", False)
 
-    async with aiohttp.ClientSession() as session:
+    timeout = aiohttp.ClientTimeout(total=60)
+    async with aiohttp.ClientSession(timeout=timeout) as session:
         while PASSIVE_SCRAPE_FLAG:
             try:
                 search_by, target_val = random.choice(active_targets)
@@ -196,7 +202,8 @@ async def passive_scrape_loop(active_targets, log_callback):
                 else:
                     log_callback(f"  -> No targeted files found in this batch. Discarding.")
                 
-                await asyncio.sleep(3) 
+                gc.collect()
+                await asyncio.sleep(3)
                 
             except Exception as e:
                 log_callback(f"[ERROR] {str(e)}")
@@ -208,7 +215,8 @@ async def prune_database_async(progress_callback=None):
     
     dead_ids = []
     try:
-        async with aiohttp.ClientSession() as session:
+        timeout = aiohttp.ClientTimeout(total=60)
+        async with aiohttp.ClientSession(timeout=timeout) as session:
             for i in range(0, len(cached_ids), 100):
                 chunk = cached_ids[i:i+100]
                 if progress_callback: progress_callback(f"Pruning: Checking {i} to {i+len(chunk)}...", i/len(cached_ids))

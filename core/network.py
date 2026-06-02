@@ -36,16 +36,20 @@ async def fetch_details_chunk(session, mod_ids):
                 pass
     return []
 
-async def fetch_vpk_bytes(session, url, semaphore):
-    if not url: return None 
+async def fetch_vpk_stream(session, url, semaphore):
+    if not url:
+        yield b''
+        return
     async with semaphore:
         try:
-            headers = {"Range": "bytes=0-1000000"} 
+            headers = {"Range": "bytes=0-1000000"}
             async with session.get(url, headers=headers, timeout=5) as response:
                 if response.status in (200, 206):
-                    return await response.read()
-        except: pass 
-    return None
+                    async for chunk in response.content.iter_chunked(8192):
+                        yield chunk
+        except Exception:
+            pass
+
 
 def get_collection_items(collection_id):
     # NEW: Overhauled retrieval to bypass private collection blocks using cookies

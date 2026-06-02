@@ -72,6 +72,7 @@ class ImageManager(QObject):
         super().__init__()
         self.manager = QNetworkAccessManager(self)
         self.cache = {}
+        self.max_cache_size = 500  # Prevent infinite RAM growth
         
     def load_image(self, url, label_widget):
         if not url:
@@ -82,6 +83,12 @@ class ImageManager(QObject):
             label_widget.setPixmap(self.cache[url])
             return
             
+        # Optional basic cache pruning
+        if len(self.cache) > self.max_cache_size:
+            # Remove a random or oldest chunk (since dictionaries preserve order in Py3.7+)
+            for _ in range(50):
+                self.cache.pop(next(iter(self.cache)))
+
         request = QNetworkRequest(QUrl(url))
         reply = self.manager.get(request)
         
@@ -198,12 +205,34 @@ class L4D2RandomizerApp(QMainWindow):
         self.tabs.addTab(self.tab_settings, "Settings & Maintenance")
         self.tabs.addTab(self.tab_sys_logs, "System Logs")
 
-        self.setup_settings_tab()
+        # Lazy Loading trackers
+        self.tab_loaded = {
+            "director": False,
+            "scraper": False,
+            "settings": False,
+            "sys_logs": False
+        }
+
+        # Load initially visible tab (Director)
         self.setup_director_tab()
-        self.setup_scraper_tab()
-        self.setup_sys_logs_tab()
+        self.tab_loaded["director"] = True
+
+        self.tabs.currentChanged.connect(self.on_tab_changed)
 
         log.info("Application Initialized. Optimized SQLite Database & Engine Filters active.")
+
+
+    def on_tab_changed(self, index):
+        title = self.tabs.tabText(index)
+        if title == "Passive Scraper" and not self.tab_loaded["scraper"]:
+            self.setup_scraper_tab()
+            self.tab_loaded["scraper"] = True
+        elif title == "Settings & Maintenance" and not self.tab_loaded["settings"]:
+            self.setup_settings_tab()
+            self.tab_loaded["settings"] = True
+        elif title == "System Logs" and not self.tab_loaded["sys_logs"]:
+            self.setup_sys_logs_tab()
+            self.tab_loaded["sys_logs"] = True
 
     def setup_settings_tab(self):
         layout = QGridLayout(self.tab_settings)
@@ -619,9 +648,21 @@ class L4D2RandomizerApp(QMainWindow):
     def append_scrape_log_ui(self, msg):
         self.scrape_log_widget.appendPlainText(msg)
 
+
     def append_sys_log_ui(self, msg):
-        if not hasattr(self, 'sys_log_widget'): return
+        if not hasattr(self, 'sys_log_widget'):
+            if not hasattr(self, 'pending_sys_logs'): self.pending_sys_logs = []
+            self.pending_sys_logs.append(msg)
+            return
+
+        if hasattr(self, 'pending_sys_logs') and self.pending_sys_logs:
+            for pending_msg in self.pending_sys_logs:
+                self._render_sys_log(pending_msg)
+            self.pending_sys_logs = []
             
+        self._render_sys_log(msg)
+
+    def _render_sys_log(self, msg):
         if "[ERROR]" in msg or "[CRITICAL]" in msg:
             html_msg = f"<span style='color: #ff4444;'>{msg}</span>"
         elif "[WARNING]" in msg:
@@ -970,6 +1011,18 @@ class L4D2RandomizerApp(QMainWindow):
             for k, v in list(self.current_assignments.items()):
                 if v and v["id"] == old_id:
                     self.current_assignments[k] = None
+                    # Clean up visual state and image
+                    btn = self.slot_widgets[k]["mod_btn"]
+                    thumb = self.slot_widgets[k]["thumb_lbl"]
+
+                    # Delete the previous pixmap completely
+                    old_pixmap = thumb.pixmap()
+                    if old_pixmap:
+                        thumb.setPixmap(QPixmap())
+                        # Note: QPixmap is destroyed by Python GC, but widgets should use deleteLater.
+                        # We don't destroy the button/label here since they are permanent structural slots,
+                        # but if we created dynamic list widgets, we would call deleteLater on them.
+
                     self._update_button_ui(k, None)
 
     def reroll_all(self):

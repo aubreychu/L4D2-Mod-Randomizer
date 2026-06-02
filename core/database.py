@@ -38,6 +38,17 @@ class DBMod(Base):
 engine = create_engine(f"sqlite:///{DB_POOL}")
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+from sqlalchemy import event
+
+@event.listens_for(engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA synchronous=NORMAL")
+    cursor.execute("PRAGMA journal_mode=WAL")
+    cursor.execute("PRAGMA cache_size=-2000")
+    cursor.close()
+
+
 def compress_paths(path_list: List[str]) -> str:
     if not path_list: return "[]"
     json_str = json.dumps(path_list)
@@ -180,12 +191,18 @@ def get_filtered_mods(filter_type: FilterType, limit: Optional[int] = None) -> L
         return [_db_to_dataclass(m) for m in query.all()]
 
 def save_mods_to_pool(mods_list: List[ModItem]):
+    if not mods_list: return
     with SessionLocal() as db:
+        # Fetch existing IDs to decide insert vs update
+        incoming_ids = [m.id for m in mods_list]
+        existing_mods = {m.mod_id: m for m in db.query(DBMod).filter(DBMod.mod_id.in_(incoming_ids)).all()}
+
+        new_db_mods = []
         for mod in mods_list:
-            db_mod = db.query(DBMod).filter(DBMod.mod_id == mod.id).first()
+            db_mod = existing_mods.get(mod.id)
             if not db_mod:
                 db_mod = DBMod(mod_id=mod.id)
-                db.add(db_mod)
+                new_db_mods.append(db_mod)
                 
             db_mod.title = mod.title
             db_mod.tags = json.dumps(mod.tags)
@@ -195,11 +212,13 @@ def save_mods_to_pool(mods_list: List[ModItem]):
             db_mod.theme_tag = mod.theme_tag
             db_mod.raw_paths = compress_paths(mod.eval.raw_paths)
             
-            # Map inbound filtering metrics to persistent records
             db_mod.subscriptions = mod.subscriptions
             db_mod.views = mod.views
             db_mod.favorited = mod.favorited
             db_mod.time_created = mod.time_created
             db_mod.time_updated = mod.time_updated
             
+        if new_db_mods:
+            db.add_all(new_db_mods)
+
         db.commit()
