@@ -26,7 +26,7 @@ def extract_vpk_paths(data: bytes) -> list:
                     name, offset = read_null_term_string(data, offset)
                     if not name: break
                     offset += 18 
-                    if ext in ['mdl', 'vmt', 'vtf', 'wav', 'mp3', 'txt', 'pcf']:
+                    if ext in {'mdl', 'vmt', 'vtf', 'wav', 'mp3', 'txt', 'pcf'}:
                         files.append(f"{path}/{name}.{ext}")
     except: pass 
     return files
