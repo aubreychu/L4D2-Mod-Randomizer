@@ -45,7 +45,7 @@ async def fetch_vpk_stream(session, url, semaphore):
             headers = {"Range": "bytes=0-1000000"}
             async with session.get(url, headers=headers, timeout=5) as response:
                 if response.status in (200, 206):
-                    async for chunk in response.content.iter_chunked(8192):
+                    async for chunk in response.content.iter_chunked(65536):
                         yield chunk
         except Exception:
             pass
