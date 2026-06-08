@@ -92,6 +92,10 @@
       "models/infected/hunter",
       "models/infected/hunter_l4d1"
     ],
+    "Jockey": [
+      "sound/player/jockey/",
+      "models/infected/jockey"
+    ],
     "Spitter": [
       "sound/player/spitter/",
       "models/infected/spitter"
