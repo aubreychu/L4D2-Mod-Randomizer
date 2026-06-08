@@ -180,8 +180,8 @@ def get_filtered_mods(filter_type: FilterType, limit: Optional[int] = None) -> L
             # Trending calculation: Total interactions balanced against account lifespan.
             current_time_stub = 1780000000  # Fallback calculation baseline
             query = query.order_by(
-                (DBMod.favorited + (DBMod.subscriptions * 0.2)) / 
-                ((current_time_stub - DBMod.time_created) / 86400 + 1)
+                ((DBMod.favorited + (DBMod.subscriptions * 0.2)) /
+                ((current_time_stub - DBMod.time_created) / 86400 + 1))
                 .desc()
             )
             
