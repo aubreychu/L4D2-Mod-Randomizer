@@ -107,7 +107,7 @@ async def build_mod_pool_async(progress_callback=None):
                     raw_new_pool[mod_id].time_updated = int(d.get("time_updated") or 0)
 
         if progress_callback: progress_callback(f"X-Ray Probing {len(raw_new_pool)} VPKs...", 0.6)
-        semaphore = asyncio.Semaphore(10)
+        semaphore = asyncio.Semaphore(50)
         await asyncio.gather(*[probe_and_map_mod(session, mod, semaphore) for mod in raw_new_pool.values()])
             
         new_safe_mods = [m for m in raw_new_pool.values() if m.eval.model_slots or m.eval.audio_slots]
@@ -121,7 +121,7 @@ async def build_mod_pool_async(progress_callback=None):
 async def passive_scrape_loop(active_targets, log_callback):
     global PASSIVE_SCRAPE_FLAG
     cached_ids = get_cached_ids()
-    semaphore = asyncio.Semaphore(10)
+    semaphore = asyncio.Semaphore(50)
     
     filters = USER_CONFIG.get("SCRAPER_FILTERS", {"MAX_SIZE_MB": 500, "MIN_SUBS": 10})
     max_bytes = filters["MAX_SIZE_MB"] * 1024 * 1024
