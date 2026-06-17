@@ -37,11 +37,13 @@ async def hunter_scrape(session, tag, cached_ids, progress_callback):
                 
             uncached = [m for m in mods if m["publishedfileid"] not in cached_ids]
             
+            if uncached:
+                new_mods.extend(uncached)
+
             if len(uncached) < 10:
                 current_page += 1
                 if current_page > 300: break 
             else:
-                new_mods.extend(uncached)
                 if progress_callback: progress_callback(f"Mining new {tag} vein (Pg {current_page})...", 0.1)
                 bonus_pages = await asyncio.gather(*[fetch_page(session, tag, p, search_by="tag") for p in range(current_page + 1, current_page + 1 + PAGES_TO_MINE)])
                 for b_page in bonus_pages: 
