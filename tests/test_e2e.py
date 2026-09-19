@@ -92,8 +92,9 @@ def test_full_user_journey(app, qtbot, mocker):
     assert "111" in app.current_selected_ids or "222" in app.current_selected_ids
 
     # 5. Deploy to Steam
-    # Important: get_collection_items must return a list
-    mocker.patch('core.director.get_collection_items', return_value=["999"])
+    # Important: get_collection_items must return a list (now an async mock)
+    mock_get_items = mocker.AsyncMock(return_value=["999"])
+    mocker.patch('core.director.get_collection_items', side_effect=mock_get_items)
 
     mock_modify = mocker.AsyncMock(return_value=True)
     mocker.patch('core.director.async_modify_collection', side_effect=mock_modify)
